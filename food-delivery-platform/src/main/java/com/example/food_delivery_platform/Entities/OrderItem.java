@@ -1,0 +1,31 @@
+package com.example.food_delivery_platform.Entities;
+
+
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "order_items")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class OrderItem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private Integer quantity;
+    private Double unitPrice;
+    private Double totalPrice;
+    private String specialInstructions;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+    @ManyToOne
+    @JoinColumn(name = "menu_item_id")
+    private MenuItem menuItem;
+}
+
