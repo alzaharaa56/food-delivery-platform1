@@ -1,31 +1,24 @@
 package com.example.food_delivery_platform.Entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-
-import jakarta.persistence.*;
-import lombok.*;
-
-@Entity
-@Table(name = "order_items")
 @Data
-@NoArgsConstructor
+@Entity
 @AllArgsConstructor
-public class OrderItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+@NoArgsConstructor
+public class OrderItem extends BaseEntity{
     private Integer quantity;
     private Double unitPrice;
     private Double totalPrice;
-    private String specialInstructions;
+    private String specialInstructions ;
 
     @ManyToOne
-    @JoinColumn(name = "order_id")
     private Order order;
-
     @ManyToOne
-    @JoinColumn(name = "menu_item_id")
     private MenuItem menuItem;
-}
 
+}

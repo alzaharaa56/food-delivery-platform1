@@ -1,44 +1,34 @@
 package com.example.food_delivery_platform.Entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
-import lombok.*;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "restaurants")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Restaurant {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+@NoArgsConstructor
+public class Restaurant extends BaseEntity{
     private String name;
     private String description;
     private String cuisineType;
-
-    private LocalTime openingTime;
-    private LocalTime closingTime;
-    private Double minOrderAmount;
+    private Date openingTime;
+    private Date closingTime;
+    private Integer minOrderAmount;
     private Double deliveryFee;
     private Boolean acceptingOrders;
 
-    private LocalDateTime createdDate;
-    private LocalDateTime updatedDate;
-    private Boolean isActive = true;
-
     @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private RestaurantOwner owner;
-
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-    private List<MenuItem> menuItems;
-
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    RestaurantOwner restaurantOwner;
+    @OneToMany
+    List<MenuItem> menuItems;
+    @OneToMany
     private List<ComboMeal> comboMeals;
-}
 
+}

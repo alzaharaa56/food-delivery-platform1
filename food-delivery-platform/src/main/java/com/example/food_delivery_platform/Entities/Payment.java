@@ -1,32 +1,24 @@
 package com.example.food_delivery_platform.Entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
-import lombok.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
-@Table(name = "payments")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Payment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+@NoArgsConstructor
+public class Payment extends BaseEntity{
     private String paymentMethod;
     private String status;
     private Double amount;
     private String transactionRef;
-    private LocalDateTime processedAt;
-
-    private LocalDateTime createdDate;
-    private LocalDateTime updatedDate;
-    private Boolean isActive = true;
+    private Date processedAt;
 
     @OneToOne
-    @JoinColumn(name = "order_id")
     private Order order;
 }
-

@@ -1,22 +1,46 @@
 package com.example.food_delivery_platform.DTO.Response;
-
+import com.example.food_delivery_platform.DTO.Summary.OrderItemSummaryDTO;
+import com.example.food_delivery_platform.Entities.Order;
+import com.example.food_delivery_platform.Entities.OrderItem;
+import com.example.food_delivery_platform.Utilities.HelperUtils;
 import lombok.Data;
-import java.time.LocalDateTime;
+
+import java.security.PrivateKey;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 public class OrderResponseDTO {
-    private Integer id;
-    private String orderCode;
-    private LocalDateTime orderDate;
     private String status;
-    private Double subtotal;
     private Double deliveryFee;
+    private Double subtotal;
     private Double discountAmount;
     private Double totalAmount;
-    private String deliveryNotes;
-    private Integer customerId;
-    private Integer restaurantId;
-    private List<OrderItemResponseDTO> items;
+    private List<OrderItemSummaryDTO> orderItems;
+    public static OrderResponseDTO toResponse(Order order) {
+        OrderResponseDTO dto = new OrderResponseDTO();
+
+        dto.setStatus(order.getStatus());
+        dto.setDeliveryFee(order.getDeliveryFee());
+        dto.setSubtotal(order.getSubtotal());
+        dto.setDiscountAmount(order.getDiscountAmount());
+        dto.setTotalAmount(order.getTotalAmount());
+        if (HelperUtils.isNotNull(order.getOrderItems())) {
+            dto.setOrderItems(OrderItemSummaryDTO.toSummary(order.getOrderItems()));
+        }
+        return dto;
+    }
+
+    public static List<OrderResponseDTO> toResponse(List<Order> orders) {
+        List<OrderResponseDTO> dtos = new ArrayList<>();
+
+        for (Order entity : orders) {
+            dtos.add(toResponse(entity));
+        }
+
+        return dtos;
+    }
+
 }
+
 

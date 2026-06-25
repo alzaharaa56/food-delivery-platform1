@@ -1,17 +1,43 @@
 package com.example.food_delivery_platform.DTO.Response;
 
+import com.example.food_delivery_platform.Entities.Delivery;
 import lombok.Data;
-import java.time.LocalDateTime;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Data
 public class DeliveryResponseDTO {
-    private Integer id;
-    private String trackingCode;
     private String status;
-    private LocalDateTime assignedAt;
-    private LocalDateTime pickedUpAt;
-    private LocalDateTime deliveredAt;
-    private Integer orderId;
-    private Integer driverId;
+    private Date pickedUpAt;
+    private Date deliveredAt;
+
+    public static DeliveryResponseDTO toResponse(Delivery delivery) {
+        if (delivery == null) {
+            return null;
+        }
+
+        DeliveryResponseDTO dto = new DeliveryResponseDTO();
+        dto.setStatus(delivery.getStatus());
+        dto.setPickedUpAt(delivery.getPickedUpAt());
+        dto.setDeliveredAt(delivery.getDeliveredAt());
+        return dto;
+    }
+
+    public static List<DeliveryResponseDTO> toResponse(List<Delivery> deliveries) {
+        List<DeliveryResponseDTO> dtos = new ArrayList<>();
+
+        if (deliveries != null) {
+            for (Delivery delivery : deliveries) {
+                dtos.add(toResponse(delivery));
+            }
+        }
+
+        return dtos;
+    }
+
+
 }
+
 

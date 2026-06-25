@@ -1,15 +1,35 @@
 package com.example.food_delivery_platform.DTO.Request;
 
+import com.example.food_delivery_platform.Entities.ComboMeal;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import java.util.List;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ComboMealRequestDTO {
+    @NotBlank(message = "Combo name is required")
     private String comboName;
-    private String description;
-    private Double totalPrice;
-    private Boolean isAvailable;
-    private Integer restaurantId;
-    private List<Integer> menuItemIds; // IDs للأصناف داخل الوجبة
-}
 
+    @NotBlank(message = "Description is required")
+    private String description;
+
+    @NotNull(message = "Total price is required")
+    @DecimalMin(value = "0.0")
+    private Double totalPrice;
+
+    public static ComboMeal toEntity(ComboMealRequestDTO dto) {
+        ComboMeal comboMeal = new ComboMeal();
+
+        comboMeal.setComboName(dto.getComboName());
+        comboMeal.setDescription(dto.getDescription());
+        comboMeal.setTotalPrice(dto.getTotalPrice());
+        return comboMeal;
+    }
+
+
+}

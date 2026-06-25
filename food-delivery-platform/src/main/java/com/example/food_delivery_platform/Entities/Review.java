@@ -1,40 +1,26 @@
 package com.example.food_delivery_platform.Entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-
-import jakarta.persistence.*;
-import lombok.*;
-import java.time.LocalDateTime;
-
-@Entity
-@Table(name = "reviews")
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Review {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+public class Review extends BaseEntity{
     private String targetType;
     private Integer rating;
     private String comment;
-    private LocalDateTime createdAt;
-
-    private LocalDateTime createdDate;
-    private LocalDateTime updatedDate;
-    private Boolean isActive = true;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
     private Customer customer;
-
-    @ManyToOne
-    @JoinColumn(name = "restaurant_id", nullable = true)
+    @ManyToOne(optional = true)
     private Restaurant restaurant;
-
-    @ManyToOne
-    @JoinColumn(name = "driver_id", nullable = true)
-    private DeliveryDriver driver;
+    @ManyToOne(optional = true)
+    private DeliveryDriver deliveryDriver;
 }
 

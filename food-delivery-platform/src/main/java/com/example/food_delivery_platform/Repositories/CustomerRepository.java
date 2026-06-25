@@ -1,24 +1,37 @@
 package com.example.food_delivery_platform.Repositories;
-
 import com.example.food_delivery_platform.Entities.Customer;
+import com.example.food_delivery_platform.Entities.CustomerAddress;
+import com.example.food_delivery_platform.Entities.Order;
+import lombok.Data;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+@Repository
 
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
+    @Query("SELECT c FROM Customer c WHERE c.isActive=true AND c.email=:email ")
+    Customer findByEmail(@Param("email") String email);
+    @Query("SELECT c FROM Customer c WHERE c.isActive=true AND c.id=:id ")
+    Customer findByID(@Param("id") Integer id);
 
-    @Query("SELECT c FROM Customer c WHERE c.email = :email AND c.isActive = true")
-    Optional<Customer> findByEmail(@Param("email") String email);
+    @Query("SELECT c from Customer c WHERE c.isActive = true AND c.loyaltyPoints=:loyaltyPoints  ")
+    List<Customer>findByLoyaltyPointsGreaterThanEqual(@Param("loyaltyPoints") Integer loyaltyPoints);
+    @Query("SELECT c FROM Customer c WHERE  c.isActive = true AND c.createdDate BETWEEN :start AND :end")
+    List<Customer> findCustomersByDateRange(
+            @Param("start") Date start,
+            @Param("end") Date end
+    );
+    @Query("SELECT c FROM Customer c WHERE c.isActive=true ")
+    List<Customer> findAll();
 
-    @Query("SELECT c FROM Customer c WHERE c.loyaltyPoints >= :points AND c.isActive = true")
-    List<Customer> findByLoyaltyPointsGreaterThanEqual(@Param("points") int points);
+    @Query("SELECT c.customerAddresses FROM Customer c WHERE c.id = :customerId")
+    List<CustomerAddress> findAddressesByCustomerId(@Param("customerId") Integer customerId);
+    @Query("SELECT c.orders FROM Customer c WHERE c.id = :customerId")
+    List<Order> findOrdersByCustomerId(@Param("customerId") Integer customerId);
 
-    @Query("SELECT c FROM Customer c WHERE c.createdDate BETWEEN :start AND :end AND c.isActive = true")
-    List<Customer> findByRegistrationDateBetween(@Param("start") LocalDateTime start,
-                                                 @Param("end") LocalDateTime end);
 }
 

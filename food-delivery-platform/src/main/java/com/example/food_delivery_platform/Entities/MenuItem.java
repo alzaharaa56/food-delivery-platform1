@@ -1,36 +1,30 @@
 package com.example.food_delivery_platform.Entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.aop.target.LazyInitTargetSource;
 
-
-import jakarta.persistence.*;
-import lombok.*;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name = "menu_items")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class MenuItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+@NoArgsConstructor
+public class MenuItem extends BaseEntity{
     private String name;
     private String description;
     private Double price;
     private Boolean isAvailable;
     private Boolean isVegetarian;
-    private Integer calories;
-
-    private LocalDateTime createdDate;
-    private LocalDateTime updatedDate;
-    private Boolean isActive = true;
-
+    private Double calories;
     @ManyToOne
-    @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
-
-    @OneToMany(mappedBy = "menuItem", cascade = CascadeType.ALL)
-    private java.util.List<OrderItem> orderItems;
+    @OneToMany
+    private List<OrderItem> orderItems;
+    @OneToMany(mappedBy = "id")
+    private List<ComboMeal> comboMeals;
 }
